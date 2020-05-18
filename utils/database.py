@@ -10,6 +10,12 @@ def add_book(name, author):
     return
 
 
+def get_all_books():
+    for book in books:
+        str_tmp = '' if book['read'] else 'not '
+        print(f'Book {book["name"]}, Author {book["author"]}, {str_tmp}read')
+    return
+
 def mark_book(name, author):
     find_book = False
     for book in books:
@@ -27,6 +33,7 @@ def mark_book(name, author):
 
 
 def del_book(name, author):
+    # TODO: create a new list, avoid change books in the FOR loop
     find_book = False
     for book in books:
         if book['name'] == name and book['author'] == author:

@@ -1,5 +1,6 @@
+# TODO: remove redundant import
 from utils import database
-from utils.database import books, add_book, mark_book, del_book
+from utils.database import add_book, get_all_books, mark_book, del_book
 
 
 def prompt_add_book():
@@ -11,10 +12,7 @@ def prompt_add_book():
 
 
 def list_book():
-    for book in books:
-        str_tmp = '' if book['read'] else 'not '
-        print(f'Book {book["name"]}, Author {book["author"]}, {str_tmp}read')
-    return
+    get_all_books()
 
 
 def prompt_read_book():
