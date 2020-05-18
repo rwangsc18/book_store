@@ -16,6 +16,7 @@ def get_all_books():
         print(f'Book {book["name"]}, Author {book["author"]}, {str_tmp}read')
     return
 
+
 def mark_book(name, author):
     find_book = False
     for book in books:
@@ -33,16 +34,18 @@ def mark_book(name, author):
 
 
 def del_book(name, author):
-    # TODO: create a new list, avoid change books in the FOR loop
-    find_book = False
-    for book in books:
-        if book['name'] == name and book['author'] == author:
-            books.remove(book)
-            find_book = True
-            break
-
-    if find_book:
-        print('Delete the book!')
-    else:
-        print('Fail to find this book. Please try again!')
+    global books
+    books = [book for book in books if book['name'] == name and book['author'] == author]
+    ### Alternative method (For loop):
+    # find_book = False
+    # for book in books:
+    #     if book['name'] == name and book['author'] == author:
+    #         books.remove(book)
+    #         find_book = True
+    #         break
+    #
+    # if find_book:
+    #     print('Delete the book!')
+    # else:
+    #     print('Fail to find this book. Please try again!')
     return
