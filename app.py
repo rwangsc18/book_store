@@ -1,31 +1,30 @@
-# TODO: remove redundant import
+# This file implements the main menu of the book_store project
 from utils import database
-from utils.database import add_book, get_all_books, mark_book, del_book
 
 
 def prompt_add_book():
     name, author = input('Input the book name and author, separated by comma:').split(',')
     name = name.strip().title()
     author = author.strip().title()
-    add_book(name, author)
+    database.add_book(name, author)
     return
 
 
 def list_book():
-    get_all_books()
+    database.get_all_books()
 
 
 def prompt_read_book():
-    name, author = input('Input the book name and author to mark as read, separated by comma:').split(',')
+    name, author = input('Input the book name and author to mark as read, separated by comma: ').split(',')
     name = name.strip().title()
     author = author.strip().title()
-    mark_book(name, author)
+    database.mark_book(name, author)
     return
 
 
 def prompt_delete_book():
-    name, author = input('Input the book name and author to mark as read, separated by comma:').split(',')
-    del_book(name.title(), author.title())
+    name, author = input('Input the book name and author to mark as read, separated by comma: ').split(',')
+    database.del_book(name.title(), author.title())
     return
 
 
@@ -38,7 +37,7 @@ Enter:
 - 'd' to delete a book
 - 'q' to quit
 
-Your choice:"""
+Your choice: """
 operations = {
     'a': prompt_add_book,
     'l': list_book,
@@ -56,5 +55,6 @@ def menu():
         else:
             print('Unknown command. Please try again.')
         user_input = input(USER_CHOICE)
+
 
 menu()
