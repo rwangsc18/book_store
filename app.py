@@ -11,7 +11,10 @@ def prompt_add_book():
 
 
 def list_book():
-    database.get_all_books()
+    books = database.get_all_books()
+    for book in books:
+        print(f"{book['name']}, Author {book['author']}, Read {book['read']}")
+    return
 
 
 def prompt_read_book():
@@ -23,10 +26,11 @@ def prompt_read_book():
 
 
 def prompt_delete_book():
-    name, author = input('Input the book name and author to mark as read, separated by comma: ').split(',')
+    name, author = input('Input the book name and author to delete, separated by comma: ').split(',')
+    name = name.strip().title()
+    author = author.strip().title()
     database.del_book(name.title(), author.title())
     return
-
 
 
 USER_CHOICE = """
@@ -47,6 +51,7 @@ operations = {
 
 
 def menu():
+    database.create_table()
     user_input = input(USER_CHOICE)
     while user_input != 'q':
         if user_input in operations:
