@@ -1,14 +1,22 @@
 """
 Concerning and dealing with books
+Use JSON
+[
+'name': book name,
+'author': book author,
+'read': False
+]
 """
-import csv
-FILE_NAME = 'books.txt'
+import json
+from os import path
+FILE_NAME = 'books.json'
 CSV_FIELDNAME = ['name', 'author', 'read']
 
 
-def create_table():  # create an empty txt file
-    with open(FILE_NAME, mode='a'):
-        pass
+def create_table():  # create an empty JSON file
+    if not path.exists(FILE_NAME): # create a new file when file does not exist
+        with open(FILE_NAME, mode='w') as file:
+            json.dump([], file)
 
 
 def add_book(name, author):
@@ -20,11 +28,8 @@ def add_book(name, author):
 
 
 def _save_all_books(books):
-    with open(FILE_NAME, mode='w') as csv_file:
-        csv_writer = csv.DictWriter(csv_file, fieldnames=CSV_FIELDNAME)
-        csv_writer.writeheader()
-        for book in books:
-            csv_writer.writerow(book)
+    with open(FILE_NAME, mode='w') as file:
+        json.dump(books, file)
     return
 
 
@@ -33,10 +38,11 @@ def get_all_books():
     #     str_tmp = '' if book['read'] else 'not '
     #     print(f'Book {book["name"]}, Author {book["author"]}, {str_tmp}read')
     # return
-    books = []
-    with open(FILE_NAME, mode='r') as csv_file:
-        csv_reader = csv.DictReader(csv_file, fieldnames=CSV_FIELDNAME)
-        books = [book for idx, book in enumerate(csv_reader) if idx > 0]
+    # books = []
+    with open(FILE_NAME, mode='r') as file:
+        # csv_reader = csv.DictReader(csv_file, fieldnames=CSV_FIELDNAME)
+        # books = [book for idx, book in enumerate(csv_reader) if idx > 0]
+        books = json.load(file)
     return books
 
 
