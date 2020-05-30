@@ -7,23 +7,37 @@ Use JSON
 'read': False
 ]
 """
+import sqlite3
 import json
 from os import path
+
 FILE_NAME = 'books.json'
+data_base = 'books.db'
+sql_create_data_table = """
+CREATE TABLE IF NOT EXISTS books(
+                               name text PRIMARY KEY,
+                               author text,
+                               read integer
+                                );
+"""
 CSV_FIELDNAME = ['name', 'author', 'read']
 
 
-def create_table():  # create an empty JSON file
-    if not path.exists(FILE_NAME): # create a new file when file does not exist
-        with open(FILE_NAME, mode='w') as file:
-            json.dump([], file)
+def create_table():  # create a table in the database
+    connection = sqlite3.connect(data_base)  # create a connection
+    cursor = connection.cursor()
+    cursor.execute(sql_create_data_table)
+    connection.commit()
+    connection.close()
 
 
 def add_book(name, author):
-    # load existing books
-    books = get_all_books()
-    books.append({'name': name, 'author': author, 'read': False})
-    _save_all_books(books)
+    connection = sqlite3.connect(data_base)  # create a connection
+    cursor = connection.cursor()
+    # sql query
+    cursor.execute('INSERT INTO books values(?, ?, 0)', (name, author))
+    connection.commit()
+    connection.close()
     return
 
 
@@ -34,41 +48,39 @@ def _save_all_books(books):
 
 
 def get_all_books():
-    # for book in books:
-    #     str_tmp = '' if book['read'] else 'not '
-    #     print(f'Book {book["name"]}, Author {book["author"]}, {str_tmp}read')
-    # return
-    # books = []
-    with open(FILE_NAME, mode='r') as file:
-        # csv_reader = csv.DictReader(csv_file, fieldnames=CSV_FIELDNAME)
-        # books = [book for idx, book in enumerate(csv_reader) if idx > 0]
-        books = json.load(file)
+    connection = sqlite3.connect(data_base)  # create a connection
+    cursor = connection.cursor()
+
+    cursor.execute('SELECT * FROM books')
+    book_list = cursor.fetchall()  # [(name, author, read), (name, author, read)], list of tuples
+
+    books = [{'name': book[0],
+              'author': book[1],
+              'read': book[2]
+              } for book in book_list ]
+    connection.close()
     return books
 
 
 def mark_book(name, author):
-    find_book = False
-    books = get_all_books()
-    for book in books:
-        if book['name'] == name and book['author'] == author:
-            book['read'] = True
-            find_book = True
-            break
+    connection = sqlite3.connect(data_base)  # create a connection
+    cursor = connection.cursor()
 
-    if find_book:
-        print('Mark the book!')
-    else:
-        print('Fail to find this book. Please try again!')
-    _save_all_books(books)
+    cursor.execute('UPDATE books SET read = ? WHERE name = ? and author = ?', (1, name, author))
+    connection.commit()
+    connection.close()
 
     return
 
 
 def del_book(name, author):
     # delete book with (name, author)
-    books = get_all_books()
-    books = [book for book in books if book['name'] != name or book['author'] != author]
-    _save_all_books(books)
+    connection = sqlite3.connect(data_base)  # create a connection
+    cursor = connection.cursor()
+
+    cursor.execute('DELETE FROM books WHERE name = ? and author = ?', (name, author))
+    connection.commit()
+    connection.close()
 
     return
     ### Alternative method (For loop):
