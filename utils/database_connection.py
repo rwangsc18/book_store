@@ -1,10 +1,15 @@
 """
 class DatabaseConnection()
+when used together with a context manager, it returns a connection object
+for sqlite3.
+Example:
+with DatabaseConnection(host) as connection:
+    pass
 """
 import sqlite3
 
 
-class DatabaseConnection():
+class DatabaseConnection:
     def __init__(self, host):
         self.connection = None
         self.host = host
