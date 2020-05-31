@@ -20,5 +20,5 @@ class DatabaseConnection():
             self.connection.commit()
             self.connection.close()
 
-    # def __repr__(self):
-    #     pass
+    def __repr__(self):
+        return f'DatabaseConnection({self.host!r})'
