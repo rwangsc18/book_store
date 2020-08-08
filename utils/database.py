@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS books(
                                read integer
                                 );
 """
-
+Book = Dict[str, Union[int, str]]
 
 
 def create_table() -> None:  # create a table in the database
