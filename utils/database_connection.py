@@ -27,3 +27,6 @@ class DatabaseConnection:
 
     def __repr__(self):
         return f'DatabaseConnection({self.host!r})'
+
+
+print(__name__)

@@ -2,6 +2,7 @@
 Concerning and dealing with books
 Use sqlite3 database
 """
+from typing import List, Dict, Union
 from utils.database_connection import DatabaseConnection
 
 FILE_NAME = 'books.json'
@@ -15,7 +16,8 @@ CREATE TABLE IF NOT EXISTS books(
 """
 
 
-def create_table():  # create a table in the database
+
+def create_table() -> None:  # create a table in the database
     with DatabaseConnection(data_base) as connection:
         cursor = connection.cursor()
         cursor.execute(sql_create_data_table)
@@ -28,7 +30,7 @@ def add_book(name, author):
     return
 
 
-def get_all_books():
+def get_all_books() -> List[Book]:
     with DatabaseConnection(data_base) as connection:
         cursor = connection.cursor()
 
